@@ -11,7 +11,9 @@ public class ViewWindow extends JFrame{
     private JPanel interactionPanel;
 
     public ViewWindow(MainController control){
-        this.interactionPanel=new InteractionPanelHandler(control).getPanel();
+        InteractionPanelHandler handler = new InteractionPanelHandler(control);
+        this.interactionPanel=handler.getPanel();
+        control.setView(handler);
         this.control = control;
         this.setContentPane(interactionPanel);
 

@@ -1,4 +1,7 @@
 package Model;
+
+import javax.xml.soap.Node;
+
 /**
  * <p>
  * Materialien zu den zentralen NRW-Abiturpruefungen im Fach Informatik ab 2018
@@ -17,14 +20,16 @@ package Model;
  * @author Qualitaets- und UnterstuetzungsAgentur - Landesinstitut fuer Schule
  * @version Generisch_02 2014-02-21
  */
-//TODO 1: Ändere die Klasse Stack derart, dass sie eine generische Klasse ist. Nenne den Typparameter "ContentType"
-public class Stack {
+//COMPLETE 1: Ändere die Klasse Stack derart, dass sie eine generische Klasse ist. Nenne den Typparameter "ContentType".
+// Hinweis: Auch die innere Klasse muss an einer Stelle angepasst werden.
+
+public class Stack<ContentType> {
 
     /* --------- Anfang der privaten inneren Klasse -------------- */
 
     private class StackNode {
 
-        private Object content = null;
+        private ContentType content = null;
         private StackNode nextNode = null;
 
         /**
@@ -33,8 +38,9 @@ public class Stack {
          *
          * @param pContent der Inhalt des Knotens
          */
-        public StackNode(Object pContent) {
-            //TODO 2: Implementiere den Konstruktor der inneren Klasse StackNode
+        public StackNode(ContentType pContent) {
+            //COMPLETE 2: Implementiere den Konstruktor der inneren Klasse StackNode
+            this.content = pContent;
         }
 
         /**
@@ -44,7 +50,8 @@ public class Stack {
          * @param pNext der Nachfolger des Knotens
          */
         public void setNext(StackNode pNext) {
-            //TODO 3: Implementiere die Methode, wie sie im Kommentar beschrieben ist.
+            //COMPLETE 3: Implementiere die Methode, wie sie im Kommentar beschrieben ist.
+            nextNode = pNext;
         }
 
         /**
@@ -58,7 +65,7 @@ public class Stack {
         /**
          * @return das Inhaltsobjekt vom Typ ContentType
          */
-        public Object getContent() {
+        public ContentType getContent() {
             return content;
         }
     }
@@ -82,8 +89,8 @@ public class Stack {
      * @return true, falls der Stapel leer ist, sonst false
      */
     public boolean isEmpty() {
-        //TODO 4: Implementiere die Methode wie im Kommentar beschrieben
-        return false;
+        //COMPLETE 4: Implementiere die Methode wie im Kommentar beschrieben
+        return head == null;
     }
 
     /**
@@ -93,8 +100,13 @@ public class Stack {
      * @param pContent
      *        das einzufuegende Objekt vom Typ ContentType
      */
-    public void push(Object pContent) {
-        //TODO 5: Implementiere die Methode push(). Wenn pContent nicht null ist, wird das Objekt auf den Stapel gelegt
+    public void push(ContentType pContent) {
+        //COMPLETE 5: Implementiere die Methode push(). Wenn pContent nicht null ist, wird das Objekt auf den Stapel gelegt
+        if(pContent != null) {
+            StackNode node = new StackNode(pContent);
+            node.setNext(head);
+            head = node;
+        }
     }
 
     /**
@@ -102,9 +114,11 @@ public class Stack {
      * Stapel leer ist, bleibt er unveraendert.
      */
     public void pop() {
-        //TODO 6: Implementiere die Methode pop(). Achtung! Es gibt keine RÜckgabe, wenn ein Objekt aus dem Stapel entfernt wird.
-    }
+        //COMPLETE 6: Implementiere die Methode pop(). Achtung! Es gibt keine RÜckgabe, wenn ein Objekt aus dem Stapel entfernt wird.
+        if (!isEmpty())
+            head = head.getNext();
 
+    }
     /**
      * Die Anfrage liefert das oberste Stapelobjekt. Der Stapel bleibt
      * unveraendert. Falls der Stapel leer ist, wird null zurueckgegeben.
@@ -112,8 +126,11 @@ public class Stack {
      * @return das oberste Stackelement vom Typ ContentType oder null, falls
      *         der Stack leer ist
      */
-    public Object top() {
-        //TODO 7: Implementiere die Methode top(). Achtung! Der Stapel bleibt dabei unverändert!
-        return null;
+    public ContentType top() {
+        //COMPLETE 7: Implementiere die Methode top(). Achtung! Der Stapel bleibt dabei unverändert!
+            if(!isEmpty()){
+                return head.getContent();
+            }
+            return null;
     }
 }

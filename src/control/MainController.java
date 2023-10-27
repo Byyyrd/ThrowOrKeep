@@ -1,5 +1,6 @@
 package control;
 
+import view.InteractionPanelHandler;
 import view.ViewWindow;
 import Model.Card;
 import Model.Stack;
@@ -8,15 +9,16 @@ public class MainController {
 
     private Stack<Card> stackOrigin;  //Ursprünglicher Stapel mit zufälligen Zahlen/Karten
     private Stack<Card> stackKeep;    //Stapel der Karten, der behalten wird
-
-    public static void main(String[] args) {
-        new MainController();
-    }
-
+    private InteractionPanelHandler view;
+    public static final int STACK_SIZE  = 10;
+    public int remainingCards = STACK_SIZE;
     public MainController() {
         new ViewWindow(this);
-
         startProgram();
+    }
+
+    public void setView(InteractionPanelHandler view) {
+        this.view = view;
     }
 
     /**
@@ -24,49 +26,89 @@ public class MainController {
      * Zufallswert: Z.b.: Math.random() -> Double zwischen 0 und 1
      */
     public void startProgram() {
-        //TODO: Implementiere die Methode gemäß des Kommentars
+        //COMPLETE 8: Implementiere die Methode gemäß des Kommentars
+        stackKeep = new Stack<>();
+        stackOrigin = new Stack<>();
+        for (int i = 0; i < STACK_SIZE; i++) {
+            stackOrigin.push(new Card((int) (Math.random() * 14)));
+        }
     }
 
     /**
      * Wert der obersten Karte von stackOrigin wird ermittelt. Falls es keine oberste Karte gibt wird -1 zurückgegeben.
+     *
      * @return Wert der obersten Karte oder -1
      */
     public int showNextCard() {
-        //TODO: Implementiere die Methode gemäß des Kommentars
+        //COMPLETE 9: Implementiere die Methode gemäß des Kommentars
+        if (!stackOrigin.isEmpty()) {
+            return stackOrigin.top().getWert();
+        }
         return -1;
     }
 
     /**
      * Falls stackOrigin nicht leer ist, wird die oberste Karte von stackOrigin auf stackKeep gelegt.
+     *
      * @return true, falls eine Karte auf stackKeep gelegt wird, sonst false.
      */
     public boolean keep() {
-        //TODO: Implementiere die Methode gemäß des Kommentars
+        //COMPLETE 10: Implementiere die Methode gemäß des Kommentars
+        if (!stackOrigin.isEmpty()) {
+            stackKeep.push(stackOrigin.top());
+            stackOrigin.pop();
+            remainingCards--;
+            view.updateDisplay();
+            return true;
+        }
         return false;
     }
-
+    public int getTopKeep(){
+        if(!stackKeep.isEmpty()){
+            return stackKeep.top().getWert();
+        }
+        return -1;
+    }
     /**
      * Falls stackOrigin nicht leer ist, wird die oberste Karte von stackOrigin entfernt.
+     *
      * @return true, falls eine Karte auf stackOrigin entfernt wird, sonst false.
      */
     public boolean throwCard() {
-        //TODO: Implementiere die Methode gemäß des Kommentars
+        //COMPLETE 11: Implementiere die Methode gemäß des Kommentars
+        if (!stackOrigin.isEmpty()) {
+            stackOrigin.pop();
+            remainingCards--;
+            view.updateDisplay();
+            return true;
+        }
         return false;
     }
 
     /**
      * Zählt die Karten von stackKeep. Zunächst wird geprüft, ob stackKeep den Regeln entspricht (Nur Karten in aufsteigender Reihenfolge abgelegt).
      * Zählt anschließend die abgelegten Karten, falls stackKeep regelkonform ist.
+     *
      * @return Die Anzahl der abgelegten Karten, falls stackKeep regelkonform ist, sonst -1.
      */
     public int inspect() {
-        //TODO: Implementiere die Methode gemäß des Kommentars
+        //COMPLETE 12: Implementiere die Methode gemäß des Kommentars
+        if (keepCorrect()) {
+            int count = 0;
+            Stack<Card> help = stackKeep;
+            while (!help.isEmpty()) {
+                help.pop();
+                count++;
+            }
+            return count;
+        }
         return -1;
     }
 
     /**
      * Prüft, ob stackKeep regelkonform ist. Dh. die Karten liegen (von oben nach unten) in absteigender Reihenfolge.
      * Tipp: Nutze einen Hilfsstack
+     *
      * @return true, falls regelkonform. Sonst false.
      */
     public boolean keepCorrect() {
