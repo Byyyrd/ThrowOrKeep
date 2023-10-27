@@ -10,8 +10,9 @@ public class MainController {
     private Stack<Card> stackOrigin;  //Ursprünglicher Stapel mit zufälligen Zahlen/Karten
     private Stack<Card> stackKeep;    //Stapel der Karten, der behalten wird
     private InteractionPanelHandler view;
-    public static final int STACK_SIZE  = 10;
+    public static final int STACK_SIZE = 10;
     public int remainingCards = STACK_SIZE;
+
     public MainController() {
         new ViewWindow(this);
         startProgram();
@@ -63,12 +64,14 @@ public class MainController {
         }
         return false;
     }
-    public int getTopKeep(){
-        if(!stackKeep.isEmpty()){
+
+    public int getTopKeep() {
+        if (!stackKeep.isEmpty()) {
             return stackKeep.top().getWert();
         }
         return -1;
     }
+
     /**
      * Falls stackOrigin nicht leer ist, wird die oberste Karte von stackOrigin entfernt.
      *
@@ -93,16 +96,17 @@ public class MainController {
      */
     public int inspect() {
         //COMPLETE 12: Implementiere die Methode gemäß des Kommentars
-        if (keepCorrect()) {
-            int count = 0;
-            Stack<Card> help = stackKeep;
-            while (!help.isEmpty()) {
-                help.pop();
-                count++;
-            }
-            return count;
+        if (!keepCorrect()) {
+            return -1;
         }
-        return -1;
+        int count = 0;
+        Stack<Card> help = stackKeep;
+        while (!help.isEmpty()) {
+            help.pop();
+            count++;
+        }
+        return count;
+
     }
 
     /**
